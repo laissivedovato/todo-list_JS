@@ -41,7 +41,7 @@ const inserirItem = (evento) => {
     banco.push({'tarefa': texto, 'status': ''});
     atualizarTela();
     //limpa o campo input -obs: refaturar
-    evento.target.value = "";
+    evento.target.value = '';
   }
 }
 
@@ -51,11 +51,21 @@ const removerItem = (indice) => {
   atualizarTela();
 }
 
+// ao clicar no checkbox se estiver vazio marca, se estiver marcado desmarca.
+const atualizarItem = (indice) => {
+  banco[indice].status = banco[indice].status === '' ? 'checked' : '';
+  atualizarTela();
+}
+
+// reconhece o item clicado, se for tipo botão remove o item, ser for tipo checkbox atualiza a tela
 const clickItem = (evento) => {
   const elemento = evento.target;
   if (elemento.type === 'button') {
     const indice = elemento.dataset.indice;
     removerItem(indice);
+  } else if (elemento.type === 'checkbox') {
+    const indice = elemento.dataset.indice;
+    atualizarItem(indice);
   }
 }
 
