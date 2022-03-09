@@ -1,11 +1,10 @@
 'use sctrict';
 
-//banco de dados
-let banco = [
-  {'tarefa': 'estudar JS', 'status': ''},
-  {'tarefa': 'ler', 'status': 'checked'},
-  {'tarefa': 'teste1', 'status': ''}
-];
+// pega os dados inseridos na lista
+const getBanco = () => JSON.parse(localStorage.getItem('todoList') ) ?? [];
+
+// manda os dados para o localstorage
+const setBanco = (banco) => localStorage.setItem('todoList', JSON.stringify(banco));
 
 //cria tarefa
 const criarItem = (tarefa, status, indice) => {
@@ -30,6 +29,7 @@ const limparTarefas = () => {
 //atualiza a tela
 const atualizarTela = () => {
   limparTarefas();
+  const banco = getBanco();
   banco.forEach((item, indice) => criarItem(item.tarefa, item.status, indice));
 }
 
@@ -38,7 +38,9 @@ const inserirItem = (evento) => {
   const tecla = evento.key;
   const texto = evento.target.value;
   if (tecla === 'Enter') {
+    const banco = getBanco();
     banco.push({'tarefa': texto, 'status': ''});
+    setBanco(banco);
     atualizarTela();
     //limpa o campo input -obs: refaturar
     evento.target.value = '';
@@ -47,13 +49,17 @@ const inserirItem = (evento) => {
 
 //remover item e atualiza a tela
 const removerItem = (indice) => {
+  const banco = getBanco();
   banco.splice (indice, 1);
+  setBanco(banco);
   atualizarTela();
 }
 
 // ao clicar no checkbox se estiver vazio marca, se estiver marcado desmarca.
 const atualizarItem = (indice) => {
+  const banco = getBanco();
   banco[indice].status = banco[indice].status === '' ? 'checked' : '';
+  setBanco(banco);
   atualizarTela();
 }
 
